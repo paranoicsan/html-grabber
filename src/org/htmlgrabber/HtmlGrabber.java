@@ -2,6 +2,10 @@ package org.htmlgrabber;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
+
+import java.util.HashMap;
 
 /**
  * org.htmlgrabber
@@ -29,6 +33,7 @@ public class HtmlGrabber {
     }
 
     /**
+     *
      * Выполняет загрузку старницы
      */
     public void parsePage() throws Exception {
@@ -36,6 +41,24 @@ public class HtmlGrabber {
                 .userAgent("Mozilla")
                 .timeout(3000)
                 .get();
+    }
+
+    /**
+     * Возвращает все ссылки на странице
+     * @return Карту ссылок, ключ - текст, значение - сама ссылка
+     */
+    public HashMap<String, String> parseAllLinks() {
+        HashMap<String, String> linksMap = new HashMap<String, String>();
+
+        Element body = document.getElementsByTag("body").get(0); // получаем тело
+        Elements links = body.getElementsByTag("a");
+        for (Element link : links) {
+            String linkHref = link.attr("href");
+            String linkText = link.text();
+            linksMap.put(linkText, linkHref);
+        }
+
+        return linksMap;
     }
 
     public Document getDocument() {

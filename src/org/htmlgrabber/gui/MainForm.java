@@ -5,6 +5,7 @@ import org.htmlgrabber.HtmlGrabber;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
+import java.util.HashMap;
 
 /**
  * org.htmlgrabber.gui
@@ -15,6 +16,8 @@ import java.awt.event.ActionEvent;
 public class MainForm {
 
     private static final String CAPTION_MAIN_FORM = "Анализатор ссылок";
+    private static final String LABEL_LINKS_COUNT = "Найдено ссылок: %s";
+
 
     private JFrame frMain;
     private JPanel paMain;
@@ -54,6 +57,7 @@ public class MainForm {
         frMain.setLocationRelativeTo(null);
 
         laPageTitle.setText("");
+        laLinksCount.setText(String.format(LABEL_LINKS_COUNT, 0));
 
         initActions(); // блоки действий
     }
@@ -74,6 +78,36 @@ public class MainForm {
     }
 
     /**
+     * Запускает процесс граббинга
+     */
+    private void startGrab() {
+        grabber = new HtmlGrabber(teUrl.getText());
+        try {
+            grabber.parsePage(); // запускаем процесс парсинга
+            laPageTitle.setText(grabber.getDocument().title()); // выставляем название страницы
+            makeOperations(); // выполняем настраиваемые операции
+        } catch (Exception e1) {
+            JOptionPane.showMessageDialog(null, e1.getMessage(), "Ошибка", JOptionPane.ERROR_MESSAGE);
+        }
+    }
+
+    /**
+     * Выполняет настраиваемые операции
+     */
+    private void makeOperations() {
+        parseLinks();
+    }
+
+    /**
+     * Обработка ссылок
+     */
+    private void parseLinks() {
+        HashMap<String, String> links = grabber.parseAllLinks();
+        String s = String.format(LABEL_LINKS_COUNT, links.size());
+        laLinksCount.setText(s);
+    }
+
+    /**
      * Действие начала граббинга
      */
     private class GrabAction extends AbstractAction {
@@ -90,13 +124,7 @@ public class MainForm {
             Cursor cur = frMain.getCursor();
             frMain.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
             try {
-                grabber = new HtmlGrabber(teUrl.getText());
-                try {
-                    grabber.parsePage();
-                    laPageTitle.setText(grabber.getDocument().title());
-                } catch (Exception e1) {
-                    JOptionPane.showMessageDialog(null, e1.getMessage(), "Ошибка", JOptionPane.ERROR_MESSAGE);
-                }
+                startGrab();
             } finally {
                 frMain.setCursor(cur);
             }
@@ -117,8 +145,8 @@ public class MainForm {
 
         @Override
         public void actionPerformed(ActionEvent e) {
-            teUrl.setText("");
             laPageTitle.setText("");
+            laLinksCount.setText(String.format(LABEL_LINKS_COUNT, 0));
         }
     }
 }

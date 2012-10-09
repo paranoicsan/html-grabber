@@ -5,6 +5,8 @@ import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
+import java.util.HashMap;
+
 /**
  * org.htmlgrabber
  * User: sanych
@@ -40,6 +42,17 @@ public class HtmlGrabberTest {
         Assert.assertNotNull(grabber.getDocument());
         String title = "Google";
         Assert.assertEquals(title, grabber.getDocument().title());
+    }
+
+    /**
+     * Возвращает карту, ключ - текст ссылки, значение - сама ссылка
+     */
+    @Test
+    public void testParseAllLinks() throws Exception {
+        grabber.parsePage();
+        HashMap<String, String> links = grabber.parseAllLinks();
+        Assert.assertNotNull(links);
+        Assert.assertTrue(links.size() > 0);
     }
 
 }
