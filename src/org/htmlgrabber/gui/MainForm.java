@@ -3,9 +3,11 @@ package org.htmlgrabber.gui;
 import org.htmlgrabber.HtmlGrabber;
 
 import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.util.HashMap;
+import java.util.Map;
 
 /**
  * org.htmlgrabber.gui
@@ -59,6 +61,10 @@ public class MainForm {
         laPageTitle.setText("");
         laLinksCount.setText(String.format(LABEL_LINKS_COUNT, 0));
 
+        DefaultTableModel model = (DefaultTableModel) tableLinks.getModel();
+        model.addColumn("Текст");
+        model.addColumn("URI");
+
         initActions(); // блоки действий
     }
 
@@ -75,6 +81,8 @@ public class MainForm {
      */
     public void showGUI() {
         frMain.setVisible(true);
+        paMain.setPreferredSize(paMain.getPreferredSize());
+        frMain.repaint();
     }
 
     /**
@@ -105,6 +113,36 @@ public class MainForm {
         HashMap<String, String> links = grabber.parseAllLinks();
         String s = String.format(LABEL_LINKS_COUNT, links.size());
         laLinksCount.setText(s);
+        fillInTable(links);
+    }
+
+    /**
+     * Вносит данные в таблицу
+     * @param links Карта ссылок
+     */
+    private void fillInTable(HashMap<String, String> links) {
+
+        DefaultTableModel model = (DefaultTableModel) tableLinks.getModel();
+
+
+        for (Map.Entry linkEntry: links.entrySet()) {
+            Object[] obj = new Object[] { linkEntry.getKey(), linkEntry.getValue() };
+            model.addRow(obj);
+        }
+    }
+
+    private void clearLabels() {
+        laPageTitle.setText("");
+        laLinksCount.setText(String.format(LABEL_LINKS_COUNT, 0));
+    }
+
+    private void clearTable() {
+        DefaultTableModel model = (DefaultTableModel) tableLinks.getModel();
+        model.setRowCount(0);
+    }
+
+    private void clearInputs() {
+        teUrl.setText("");
     }
 
     /**
@@ -124,6 +162,8 @@ public class MainForm {
             Cursor cur = frMain.getCursor();
             frMain.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
             try {
+                clearLabels();
+                clearTable();
                 startGrab();
             } finally {
                 frMain.setCursor(cur);
@@ -145,8 +185,13 @@ public class MainForm {
 
         @Override
         public void actionPerformed(ActionEvent e) {
-            laPageTitle.setText("");
-            laLinksCount.setText(String.format(LABEL_LINKS_COUNT, 0));
+            clearInputs();
+            clearTable();
+            clearLabels();
         }
     }
+
+
+
+
 }

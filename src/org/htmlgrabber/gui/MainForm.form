@@ -3,10 +3,10 @@
   <grid id="27dc6" binding="paMain" layout-manager="GridLayoutManager" row-count="3" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
     <margin top="0" left="0" bottom="0" right="0"/>
     <constraints>
-      <xy x="20" y="20" width="661" height="563"/>
+      <xy x="20" y="20" width="635" height="401"/>
     </constraints>
     <properties>
-      <preferredSize width="435" height="400"/>
+      <preferredSize width="500" height="400"/>
     </properties>
     <border type="none"/>
     <children>
@@ -14,7 +14,8 @@
         <margin top="5" left="5" bottom="5" right="5"/>
         <constraints>
           <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="1" hsize-policy="7" anchor="1" fill="1" indent="0" use-parent-layout="false">
-            <preferred-size width="-1" height="5"/>
+            <minimum-size width="500" height="-1"/>
+            <preferred-size width="431" height="5"/>
           </grid>
         </constraints>
         <properties/>
@@ -27,6 +28,7 @@
               </grid>
             </constraints>
             <properties>
+              <labelFor value="b2ed9"/>
               <text value="URL:"/>
             </properties>
           </component>
@@ -60,26 +62,38 @@
           </component>
         </children>
       </grid>
-      <grid id="f4be0" layout-manager="GridLayoutManager" row-count="2" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
-        <margin top="5" left="5" bottom="5" right="5"/>
+      <scrollpane id="923f6">
         <constraints>
-          <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="1" hsize-policy="3" anchor="1" fill="1" indent="0" use-parent-layout="false">
-            <preferred-size width="-1" height="50"/>
+          <grid row="2" column="0" row-span="1" col-span="1" vsize-policy="7" hsize-policy="7" anchor="0" fill="3" indent="0" use-parent-layout="false">
+            <minimum-size width="-1" height="50"/>
+            <preferred-size width="-1" height="200"/>
           </grid>
         </constraints>
-        <properties/>
-        <border type="line">
-          <color color="-16777216"/>
-        </border>
+        <properties>
+          <enabled value="true"/>
+          <inheritsPopupMenu value="true"/>
+        </properties>
+        <border type="none"/>
         <children>
-          <component id="6471d" class="javax.swing.JLabel" binding="laLinksCount">
-            <constraints>
-              <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
-            </constraints>
+          <component id="22cea" class="javax.swing.JTable" binding="tableLinks">
+            <constraints/>
             <properties>
-              <text value="Найдено ссылок: 0"/>
+              <autoCreateRowSorter value="true"/>
             </properties>
+            <clientProperties>
+              <terminateEditOnFocusLost class="java.lang.Boolean" value="false"/>
+            </clientProperties>
           </component>
+        </children>
+      </scrollpane>
+      <grid id="c091d" layout-manager="GridLayoutManager" row-count="2" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+        <margin top="0" left="0" bottom="0" right="0"/>
+        <constraints>
+          <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+        </constraints>
+        <properties/>
+        <border type="line"/>
+        <children>
           <component id="21fb0" class="javax.swing.JLabel" binding="laPageTitle">
             <constraints>
               <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
@@ -88,23 +102,13 @@
               <text value="Label"/>
             </properties>
           </component>
-        </children>
-      </grid>
-      <grid id="5fcfe" layout-manager="GridLayoutManager" row-count="1" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
-        <margin top="5" left="5" bottom="5" right="5"/>
-        <constraints>
-          <grid row="2" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
-        </constraints>
-        <properties/>
-        <border type="none"/>
-        <children>
-          <component id="22cea" class="javax.swing.JTable" binding="tableLinks">
+          <component id="6471d" class="javax.swing.JLabel" binding="laLinksCount">
             <constraints>
-              <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="6" hsize-policy="6" anchor="0" fill="3" indent="0" use-parent-layout="false">
-                <preferred-size width="150" height="50"/>
-              </grid>
+              <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
             </constraints>
-            <properties/>
+            <properties>
+              <text value="Найдено ссылок: 0"/>
+            </properties>
           </component>
         </children>
       </grid>
