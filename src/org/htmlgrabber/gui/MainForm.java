@@ -1,6 +1,9 @@
 package org.htmlgrabber.gui;
 
+import org.htmlgrabber.HtmlGrabber;
+
 import javax.swing.*;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 
 /**
@@ -11,21 +14,30 @@ import java.awt.event.ActionEvent;
  */
 public class MainForm {
 
-    private JFrame frMain;
+    private static final String CAPTION_MAIN_FORM = "Анализатор ссылок";
 
+    private JFrame frMain;
     private JPanel paMain;
     private JTextField teUrl;
     private JButton btnClear;
     private JButton btnParse;
     private JLabel laLinksCount;
     private JTable tableLinks;
+    private JLabel laPageTitle;
 
-    private static final String CAPTION_MAIN_FORM = "Анализатор ссылок";
+    /**
+     * Экземпляр граббера
+     */
+    private HtmlGrabber grabber;
 
     /**
      * Очистка поля ввода
      */
     private ClearInputAction actClearInput = new ClearInputAction(btnClear.getText());
+    /**
+     * Запуск парсера
+     */
+    private GrabAction actGrab = new GrabAction(btnParse.getText());
 
     public MainForm() {
         initGUI();
@@ -41,6 +53,8 @@ public class MainForm {
         frMain.pack();
         frMain.setLocationRelativeTo(null);
 
+        laPageTitle.setText("");
+
         initActions(); // блоки действий
     }
 
@@ -49,6 +63,7 @@ public class MainForm {
      */
     private void initActions() {
         btnClear.setAction(actClearInput);
+        btnParse.setAction(actGrab);
     }
 
     /**
@@ -72,7 +87,19 @@ public class MainForm {
 
         @Override
         public void actionPerformed(ActionEvent e) {
-            //
+            Cursor cur = frMain.getCursor();
+            frMain.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
+            try {
+                grabber = new HtmlGrabber(teUrl.getText());
+                try {
+                    grabber.parsePage();
+                    laPageTitle.setText(grabber.getDocument().title());
+                } catch (Exception e1) {
+                    JOptionPane.showMessageDialog(null, e1.getMessage(), "Ошибка", JOptionPane.ERROR_MESSAGE);
+                }
+            } finally {
+                frMain.setCursor(cur);
+            }
         }
     }
 
@@ -91,6 +118,7 @@ public class MainForm {
         @Override
         public void actionPerformed(ActionEvent e) {
             teUrl.setText("");
+            laPageTitle.setText("");
         }
     }
 }
